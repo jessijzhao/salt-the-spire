@@ -1,6 +1,9 @@
 ToDo:
 - add option to both decode and encode
-- centralize I/O
+- add integration test for fun
+
+Changes in 0.3:
+- moved I/O to main
 
 Changes in 0.2:
 - everything is bytes now (I have never heard of strings??)

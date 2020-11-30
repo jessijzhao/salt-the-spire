@@ -7,5 +7,5 @@ Save files are the XOR of base 64 encoded JSON strings and a "key" phrase.
 Uses Python 3.
 
 ```
-usage: saves.py [-h] (-d | -e) input output
+usage: salt_the_spire.py [-h] (-d | -e) input output
 ```

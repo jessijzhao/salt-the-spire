@@ -4,7 +4,7 @@
 Author: jessijzhao
 Date: November 29, 2020
 
-Decodes or encodes save files for Save the Spire.
+Decodes or encodes save files for Slay the Spire.
 """
 
 import base64
@@ -40,46 +40,40 @@ def xor_key(bstring, key=b"key"):
     return bytes(_a ^ _b for _a, _b in zip(bstring, cycle(key)))
 
 
-def decode(infile, outfile):
+def decode(inbytes):
     """
-    infile: save file to decode
-    outfile: file to store decoded save file
+    inbytes: bytes to decode
 
-    Decodes the infile into human-readable JSON.
+    Returns decoded bytes representing a human-readable JSON.
     """
-    b64_text = infile.read()
-    infile.close()
-
-    json_text = xor_key(base64.b64decode(b64_text))
-    outfile.write(json_text)
-    outfile.close()
+    return xor_key(base64.b64decode(inbytes))
 
 
-def encode(infile, outfile):
+def encode(inbytes):
     """
-    infile: save file to encode
-    outfile: file to store encoded save file
+    inbytes: bytes to encode
 
-    Encodes the infile into Slay the Spire save file format.
+    Returns encoded bytes in Slay the Spire save file format.
     """
-    json_text = infile.read()
-    infile.close()
-
-    b64_text = base64.b64encode(xor_key(json_text))
-    outfile.write(b64_text)
-    outfile.close()
+    return base64.b64encode(xor_key(inbytes))
 
 
 def main():
 
     args = parse_args()
 
+    inbytes = args.input.read()
+    args.input.close()
+
     if args.decode:
-        decode(args.input, args.output)
+        outbytes = decode(inbytes)
     elif args.encode:
-        encode(args.input, args.output)
+        outbytes = encode(inbytes)
     else:
         raise RuntimeError
+
+    args.output.write(outbytes)
+    args.output.close()
 
 
 if __name__ == "__main__":
