@@ -1,5 +1,11 @@
 ToDo:
 - add option to both decode and encode
+- centralize I/O
+
+Changes in 0.2:
+- everything is bytes now (I have never heard of strings??)
+- updated README with description of save file
+- added example encoded/decoded JSON string
 
 Changes in 0.1:
 - first draft version

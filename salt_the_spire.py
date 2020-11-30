@@ -24,20 +24,20 @@ def parse_args():
     group.add_argument("-e", "--encode", action="store_true", help="encode save file")
 
     # which files to read from / write to
-    parser.add_argument("input", type=argparse.FileType('r'), help="save file to decode/encode")
-    parser.add_argument("output", type=argparse.FileType('w'), help="file to store decoded/encoded save file")
+    parser.add_argument("input", type=argparse.FileType('rb'), help="save file to decode/encode")
+    parser.add_argument("output", type=argparse.FileType('wb'), help="file to store decoded/encoded save file")
 
     return parser.parse_args()
 
 
-def xor_key(text, key=b"key"):
+def xor_key(bstring, key=b"key"):
     """
-    text: string to xor with cyclic key
+    bstring: bytestring to xor with cyclic key
     key: key phrase (actually just "key")
 
     Takes the XOR of the input text and the key phrase ("key").
     """
-    return bytes([_a ^ _b for _a, _b in zip(text, cycle(key))])
+    return bytes(_a ^ _b for _a, _b in zip(bstring, cycle(key)))
 
 
 def decode(infile, outfile):
@@ -47,14 +47,12 @@ def decode(infile, outfile):
 
     Decodes the infile into human-readable JSON.
     """
-
-    text = infile.read()
+    b64_text = infile.read()
     infile.close()
 
-    btext = base64.b64decode(text)
-    json = xor_key(btext).decode("utf-8")
-
-    outfile.write(json)
+    json_text = xor_key(base64.b64decode(b64_text))
+    outfile.write(json_text)
+    outfile.close()
 
 
 def encode(infile, outfile):
@@ -64,13 +62,11 @@ def encode(infile, outfile):
 
     Encodes the infile into Slay the Spire save file format.
     """
-    json = infile.read()
-    json = bytes(json, "utf-8")
+    json_text = infile.read()
+    infile.close()
 
-    text = base64.b64encode(xor_key(json))
-
-    encoded_str = str(text, "utf-8")
-    outfile.write(str(encoded_str))
+    b64_text = base64.b64encode(xor_key(json_text))
+    outfile.write(b64_text)
     outfile.close()
 
 
