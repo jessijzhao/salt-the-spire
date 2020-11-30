@@ -1,0 +1,5 @@
+ToDo:
+- add option to both decode and encode
+
+Changes in 0.1:
+- first draft version
