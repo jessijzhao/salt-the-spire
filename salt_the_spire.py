@@ -12,25 +12,7 @@ import argparse
 from itertools import cycle
 
 
-def parse_args():
-    """
-    Parse command line arguments.
-    """
-    parser = argparse.ArgumentParser()
-
-    # whether to decode or encode save file
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("-d", "--decode", action="store_true", help="decode save file")
-    group.add_argument("-e", "--encode", action="store_true", help="encode save file")
-
-    # which files to read from / write to
-    parser.add_argument("input", type=argparse.FileType('rb'), help="save file to decode/encode")
-    parser.add_argument("output", type=argparse.FileType('wb'), help="file to store decoded/encoded save file")
-
-    return parser.parse_args()
-
-
-def xor_key(bstring, key=b"key"):
+def xor_key(bstring, key=b'key'):
     """
     bstring: bytestring to xor with cyclic key
     key: key phrase (actually just "key")
@@ -60,7 +42,18 @@ def encode(inbytes):
 
 def main():
 
-    args = parse_args()
+    parser = argparse.ArgumentParser()
+
+    # whether to decode or encode save file
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('-d', '--decode', action='store_true', help='decode save file')
+    group.add_argument('-e', '--encode', action='store_true', help='encode save file')
+
+    # which files to read from / write to
+    parser.add_argument('input', type=argparse.FileType('rb'), help='save file to decode/encode')
+    parser.add_argument('output', type=argparse.FileType('wb'), help='file to store decoded/encoded save file')
+
+    args = parser.parse_args()
 
     inbytes = args.input.read()
     args.input.close()
@@ -76,6 +69,6 @@ def main():
     args.output.close()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

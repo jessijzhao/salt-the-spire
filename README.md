@@ -4,8 +4,21 @@ Decodes and encodes save files of [Slay the Spire](https://store.steampowered.co
 
 Save files are the XOR of base 64 encoded JSON strings and a "key" phrase.
 
-Uses Python 3.
+
+## Contents
+
+- [salt_the_spire.py](salt_the_spire.py) decodes and encodes files
+
+- [decoded.txt](decoded.txt) contains an example JSON object
+
+- [encoded.txt](encoded.txt) contains the corresponding encoded JSON object
+
+
+
+## Usage
 
 ```
 usage: salt_the_spire.py [-h] (-d | -e) input output
 ```
+
+Requires Python 3.
